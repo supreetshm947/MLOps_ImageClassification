@@ -16,7 +16,8 @@ class Network(nn.Module):
         self.bn3 = nn.BatchNorm2d(24)
         self.conv4 = nn.Conv2d(in_channels=24, out_channels=24, kernel_size=5, stride=1, padding=1)
         self.bn4 = nn.BatchNorm2d(24)
-        self.fc = nn.Linear(24*10*10,10)
+        self.fc = nn.Linear(24*10*10,100)
+        self.sm = nn.LogSoftmax(1)
     
     def forward(self, input):
         output = F.relu(self.bn1(self.conv1(input)))
@@ -26,6 +27,8 @@ class Network(nn.Module):
         output = F.relu(self.bn4(self.conv4(output)))
         output = output.view(-1, 10*10*24)
         output = self.fc(output)
+        output = self.sm(output)
+        return output
     
     def save_model(self, filename="model.pth"):
         dir = "./model"
