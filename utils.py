@@ -44,11 +44,10 @@ def get_device_type():
 def get_num_gpus():
     return context.num_gpus()
 
-def train(train_loader, test_loader, model, device, criterion, optimizer, epochs=100, plot=False):
+def train(train_loader, test_loader, model, device, criterion, optimizer, epochs=100, plot_loss =False):
     train_losses = []
     test_losses = []
-    train_accuracy = []
-    test_accuracy = []
+    test_accuracies = []
     for epoch in range(epochs):
         start = time.time()
         loss_sum = 0
@@ -93,21 +92,23 @@ def train(train_loader, test_loader, model, device, criterion, optimizer, epochs
             test_loss = loss_sum/sample_count
             test_accuracy = correct/sample_count
             test_losses.append(test_loss)
+            test_accuracies.append(test_accuracy)
             print(
             f'Epoch {epoch+1} | train loss: {train_loss:.3f}, train accuracy: {train_accuracy:.3f}, ' + \
             f'test loss: {test_loss:.3f}, test accuracy: {test_accuracy:.3f}, ' + \
             f'time: {str(datetime.timedelta(seconds=int(time.time()-start)))}'
         )
         if plot:
-            plot(train_losses=train_losses, test_losses=test_losses)
+            plot(train_losses=train_losses, test_losses=test_losses, test_accuracy=test_accuracies)
     model.save_model("model.pth")
 
-def plot(train_losses, test_losses):
+def plot(train_losses, test_losses, test_accuracy):
     display.clear_output(wait=True)
     display.display(plt.gcf())
     plt.clf()
     plt.plot(train_losses, label='Training loss')
     plt.plot(test_losses, label='Validation loss')
+    plt.plot(test_accuracy, label='Validation Accuracy')
     plt.legend(frameon=False)
     plt.show(block=False)
     plt.pause(.1)
