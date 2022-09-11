@@ -23,17 +23,22 @@ def load_data(batch_size, num_workers, pin_memory=False):
 
    
 
-    train_loader = torch.utils.data.DataLoader(train, batch_size=batch_size, sampler=SubsetRandomSampler(
-        range(len(train))), num_workers=num_workers, pin_memory=pin_memory)
+    # train_loader = torch.utils.data.DataLoader(train, batch_size=batch_size, sampler=SubsetRandomSampler(
+    #     range(len(train))), num_workers=num_workers, pin_memory=pin_memory)
 
-    test_loader = torch.utils.data.DataLoader(test, batch_size=len(test), sampler=SubsetRandomSampler(
-        range(len(test))), num_workers=num_workers, pin_memory=pin_memory)
+    # test_loader = torch.utils.data.DataLoader(test, batch_size=len(test), sampler=SubsetRandomSampler(
+    #     range(len(test))), num_workers=num_workers, pin_memory=pin_memory)
+
+    train_loader = torch.utils.data.DataLoader(train, batch_size=batch_size, shuffle=True, num_workers=6)
+    test_loader = torch.utils.data.DataLoader(test, batch_size=batch_size, shuffle=True, num_workers=6)
+    
+
 
     return train_loader, test_loader
 
 
 def get_device_type():
-    return torch.device("gpu" if torch.cuda.is_available() else "cpu")
+    return torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 
 def get_num_gpus():
