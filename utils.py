@@ -29,8 +29,8 @@ def load_data(batch_size, num_workers, pin_memory=False):
     # test_loader = torch.utils.data.DataLoader(test, batch_size=len(test), sampler=SubsetRandomSampler(
     #     range(len(test))), num_workers=num_workers, pin_memory=pin_memory)
 
-    train_loader = torch.utils.data.DataLoader(train, batch_size=batch_size, shuffle=True, num_workers=6)
-    test_loader = torch.utils.data.DataLoader(test, batch_size=batch_size, shuffle=True, num_workers=6)
+    train_loader = torch.utils.data.DataLoader(train, batch_size=batch_size, shuffle=True, num_workers=num_workers)
+    test_loader = torch.utils.data.DataLoader(test, batch_size=batch_size, shuffle=True, num_workers=num_workers)
     
 
 
@@ -44,80 +44,11 @@ def get_device_type():
 def get_num_gpus():
     return context.num_gpus()
 
-
-def train_model(train_loader, test_loader, device,model: Network, optimizer, criterion, epochs=10, print_every=10):
+def train(train_loader, test_loader, model, device, criterion, optimizer, epochs=100, plot=False):
     train_losses = []
     test_losses = []
-    running_loss = 0
-    steps = 0
-    for epoch in range(epochs):
-        for inputs, labels in train_loader:
-            steps += 1
-            inputs, labels = inputs.to(device), labels.to(device)
-            optimizer.zero_grad()
-            
-            log_output = model.forward(inputs)
-            loss = criterion(log_output, labels)
-            loss.backward()
-            optimizer.step()
-            running_loss += loss.item()
-
-            # if steps % print_every == 0:
-            #     test_loss = 0
-            #     accuracy = 0
-            #     model.eval()
-            #     with torch.no_grad():
-            #         for test_inputs, test_labels in test_loader:
-            #             test_inputs, test_labels = test_inputs.to(device), test_labels.to(device)
-            #             test_log_output = model.forward(test_inputs)
-            #             batch_loss = criterion(test_log_output, test_labels)
-            #             test_loss += batch_loss.item()
-
-            #             test_output = torch.exp(test_log_output)
-            #             top_out, top_class = test_output.topk(1, dim=1)
-            #             equals = top_class == test_labels.view(top_class.shape)
-            #             accuracy += torch.mean(equals.type(torch.float)).item()
-            #         train_losses.append(running_loss/len(train_loader))
-            #         test_losses.append(test_loss/len(test_loader))
-            #         print(f"Epoch {epoch+1}/{epochs}.. ",
-            #         f"Train loss: {running_loss/print_every:.3f}.. "
-            #         f"Test loss: {test_loss/len(test_loader):.3f}.. ",
-            #         f"Test accuracy: {accuracy/len(test_loader):.3f}")
-            #         running_loss=0
-            #         plot(train_losses, test_losses)
-            #     model.train()
-
-        test_loss, accuracy = run_validate(model=model, test_loader=test_loader, device=device, criterion=criterion)
-        train_losses.append(running_loss/len(train_loader))
-        test_losses.append(test_loss/len(test_loader))
-        print(f"Epoch {epoch+1}/{epochs}.. ",
-        f"Train loss: {running_loss/print_every:.3f}.. "
-        f"Test loss: {test_loss/len(test_loader):.3f}.. ",
-        f"Test accuracy: {accuracy/len(test_loader):.3f}")
-        running_loss=0
-        plot(train_losses, test_losses)
-        
-    model.save_model("model.pth")
-
-def run_validate(model, test_loader, device, criterion):
-    test_loss = 0
-    accuracy = 0
-    model.eval()
-    with torch.no_grad():
-        for test_inputs, test_labels in test_loader:
-            test_inputs, test_labels = test_inputs.to(device), test_labels.to(device)
-            test_log_output = model.forward(test_inputs)
-            batch_loss = criterion(test_log_output, test_labels)
-            test_loss += batch_loss.item()
-
-            test_output = torch.exp(test_log_output)
-            top_out, top_class = test_output.topk(1, dim=1)
-            equals = top_class == test_labels.view(top_class.shape)
-            accuracy += torch.mean(equals.type(torch.float)).item()
-    model.train()
-    return test_loss, accuracy
-
-def train(train_loader, test_loader, model, device, criterion, optimizer, epochs=100,):
+    train_accuracy = []
+    test_accuracy = []
     for epoch in range(epochs):
         start = time.time()
         loss_sum = 0
@@ -142,7 +73,7 @@ def train(train_loader, test_loader, model, device, criterion, optimizer, epochs
         
         train_loss = loss_sum/sample_count
         train_accuracy = correct/sample_count
-
+        train_losses.append(train_loss)
         with torch.no_grad():
             n_batches = len(test_loader)
             loss_sum = 0
@@ -161,12 +92,14 @@ def train(train_loader, test_loader, model, device, criterion, optimizer, epochs
             
             test_loss = loss_sum/sample_count
             test_accuracy = correct/sample_count
-
+            test_losses.append(test_loss)
             print(
             f'Epoch {epoch+1} | train loss: {train_loss:.3f}, train accuracy: {train_accuracy:.3f}, ' + \
             f'test loss: {test_loss:.3f}, test accuracy: {test_accuracy:.3f}, ' + \
             f'time: {str(datetime.timedelta(seconds=int(time.time()-start)))}'
         )
+        if plot:
+            plot(train_losses=train_losses, test_losses=test_losses)
     model.save_model("model.pth")
 
 def plot(train_losses, test_losses):
