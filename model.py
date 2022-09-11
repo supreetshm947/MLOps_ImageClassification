@@ -39,4 +39,4 @@ class Network(nn.Module):
         if not os.path.exists(dir):
             os.makedirs(dir)
         filename = os.path.join(dir, filename)
-        torch.save(self.state_dict, filename)
+        torch.save(self.state_dict(), filename)

@@ -10,6 +10,8 @@ import matplotlib.pyplot as plt
 import time 
 import datetime
 from IPython import display
+import pickle 
+
 plt.ion()
 
 def load_data(batch_size, num_workers, pin_memory=False):
@@ -20,8 +22,6 @@ def load_data(batch_size, num_workers, pin_memory=False):
 
     train = datasets.CIFAR100("data", train=True, download=True, transform=transform)
     test = datasets.CIFAR100("data", train=False, transform=transform)
-
-   
 
     # train_loader = torch.utils.data.DataLoader(train, batch_size=batch_size, sampler=SubsetRandomSampler(
     #     range(len(train))), num_workers=num_workers, pin_memory=pin_memory)
@@ -111,3 +111,13 @@ def plot(train_losses, test_losses):
     plt.legend(frameon=False)
     plt.show(block=False)
     plt.pause(.1)
+
+def getLabels():
+    with open("data/cifar-100-python/meta", 'rb') as fo:
+        dict = pickle.load(fo, encoding='bytes')
+    return [x.decode('utf-8') for x in list(dict.values())[0]]
+
+def loadModel(device, filename="model.pth"):
+    model = Network()
+    model.load_state_dict(torch.load("model/"+filename, map_location=device))
+    return model
