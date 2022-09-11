@@ -9,6 +9,6 @@ train_loader, test_loader = utils.load_data(200, num_gpu*4)
 
 model = Network()
 criterion = nn.CrossEntropyLoss()
-optimizer = optim.Adam(model.fc.parameters(), lr = 0.03)
+optimizer = optim.Adam(model.parameters(), lr = 0.03)
 
-utils.trainandplot(train_loader=train_loader, test_loader=test_loader, device=dev_type, optimizer=optimizer, criterion=criterion, model=model)
+utils.train(train_loader=train_loader, test_loader=test_loader, device=dev_type, optimizer=optimizer, criterion=criterion, model=model)
