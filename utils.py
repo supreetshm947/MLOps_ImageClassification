@@ -1,8 +1,7 @@
-from unittest import TestLoader
+from torch.autograd import Variable
 from torchvision import datasets
 import numpy as np
 import torch
-from torch.utils.data.sampler import SubsetRandomSampler
 from tensorflow.python.eager import context
 from model import Network
 from torchvision import transforms
@@ -11,6 +10,9 @@ import time
 import datetime
 from IPython import display
 import pickle 
+import imageio
+from skimage.transform import resize
+from PIL import Image
 
 plt.ion()
 
@@ -113,12 +115,29 @@ def plot(train_losses, test_losses, test_accuracy):
     plt.show(block=False)
     plt.pause(.1)
 
-def getLabels():
+def get_labels():
     with open("data/cifar-100-python/meta", 'rb') as fo:
         dict = pickle.load(fo, encoding='bytes')
     return [x.decode('utf-8') for x in list(dict.values())[0]]
 
-def loadModel(device, filename="model.pth"):
+def load_model(device, filename="model.pth"):
     model = Network()
     model.load_state_dict(torch.load("model/"+filename, map_location=device))
     return model
+
+def load_image(path):
+    return imageio.imread(path)
+
+def resize_image(image):
+    return torch.tensor(resize(image, (32,32), anti_aliasing=True)).permute(2,0,1).type(torch.FloatTensor)[None,:,:]
+
+def image_loader(image_path, device):
+    transform = transforms.Compose([
+        transforms.Resize((32,32)),
+        transforms.ToTensor()
+    ])
+    image = Image.open(image_path)
+    image = transform(image).float()
+    image = Variable(image, requires_grad=True)
+    image = image.unsqueeze(0)
+    return image.to(device)

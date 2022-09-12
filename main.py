@@ -3,8 +3,9 @@ import torch.nn as nn
 from torch import optim
 from model import Network
 import ssl
+import torch
 
-TRAINING = True
+TRAINING = False
 
 ssl._create_default_https_context = ssl._create_unverified_context
 
@@ -21,5 +22,14 @@ if __name__ == '__main__':
 
         utils.train(train_loader=train_loader, test_loader=test_loader, device=dev_type, optimizer=optimizer, criterion=criterion, model=model, plot_loss=True)
     else:
-        model = utils.loadModel(dev_type)
-        print(model)
+        model = utils.load_model(dev_type)
+        labels = utils.get_labels()
+        image = utils.image_loader("tele.jpg", dev_type)
+        #out = torch.exp(model(image))
+        out = model(image)
+        out_prob = torch.max(out).item()/torch.sum(out).item()
+        cl_exp = out.argmax(dim=1)
+        cl = model(image).argmax(dim=1)
+        print(cl, cl_exp, out_prob)
+        print(labels[cl])
+        
