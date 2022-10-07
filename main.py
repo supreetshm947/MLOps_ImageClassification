@@ -2,7 +2,7 @@ import utils
 import torch.nn as nn
 from torch import optim
 from model import Network
-import ssl
+import ssl 
 
 ssl._create_default_https_context = ssl._create_unverified_context
 
