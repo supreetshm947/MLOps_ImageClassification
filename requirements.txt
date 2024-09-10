@@ -1,0 +1,14 @@
+--extra-index-url  https://download.pytorch.org/whl/cu118
+torch==2.4.0
+torchvision
+torchaudio
+
+--extra-index-url  https://data.pyg.org/whl/torch-2.4.0+cu118.html
+torch-geometric
+
+click
+matplotlib
+scikit-learn
+
+#mlops
+zenml[server]
