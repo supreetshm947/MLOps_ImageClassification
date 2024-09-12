@@ -57,9 +57,9 @@ The implemented Machine Learning workflow consists of several key stages:
 
    You can run the pipeline by specifying the `--config` flag, which can take one of the following options:
    
-   - `"deploy"`: Train and deploy the model if it meets the specified accuracy threshold.
-   - `"predict"`: Use the trained model to make predictions.
-   - `"deploy_and_predict"`: Train, deploy, and then run predictions using the model.
+   `"deploy"`: Train and deploy the model if it meets the specified accuracy threshold.
+   `"predict"`: Use the trained model to make predictions.
+   `"deploy_and_predict"`: Train, deploy, and then run predictions using the model.
    
    Additionally, you can set a `--min_accuracy` flag, which determines the minimum accuracy required for a trained model to be deployed on the MLflow server.
 
@@ -73,6 +73,5 @@ The implemented Machine Learning workflow consists of several key stages:
 	Run the Streamlit app to interact with the model:
 	
 	```bash
-	cd frontend
 	streamlit run streamlit_app.py
 	
