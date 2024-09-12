@@ -31,3 +31,30 @@ The implemented Machine Learning workflow consists of several key stages:
    git clone https://github.com/your_username/image-classification-mlops.git
    cd MLOps_ImageClassification
 
+2. **Create Conda Environment and Install Dependencies**
+
+   ```bash
+   conda create -n ENV_NAME python=3.10 -y
+	conda activate ENV_NAME
+	pip install -r requirements.txt
+
+3. **Setting up Zenml**
+   
+   - Installing Dependencies
+      ```bash
+      make setup
+
+
+   - Creating and registering experiment tracker, model deployer and stack 
+      ```bash
+      make create
+
+4. **Starting Zenml Server**
+   ```bash
+   make start
+
+5. **Training Pipeline**
+   The options to run the pipline are given by config flag which can be either "deploy", "predict" or "deploy_and_predict" and min_accuracy is the minimum accuracy required for a trained model to be deployed on mlflow server.
+      ```bash
+      python run_deployment.py --config deploy --min_accuracy .40
+
