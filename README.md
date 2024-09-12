@@ -11,10 +11,9 @@ This work implements a Machine Learning (ML) workflow and deployment for an imag
 
 ## 🎯 Project Overview
 
-The implemented Machine Learning workflow consists of several key stages:
-
 ![pipeline](pipeline.png)
 
+The implemented Machine Learning workflow consists of several key stages:
 1. **Data Ingestion**: Load and preprocess (apply transformations) the CIFAR-100 dataset.
 2. **DataLoader**: Fetch loader objects for ingested and processed data.
 3. **Model Training**: Train a convolutional neural network (CNN) on the training dataset.
