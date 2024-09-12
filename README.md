@@ -44,7 +44,6 @@ The implemented Machine Learning workflow consists of several key stages:
       ```bash
       make setup
 
-
    - Creating and registering experiment tracker, model deployer and stack 
       ```bash
       make create
@@ -57,9 +56,9 @@ The implemented Machine Learning workflow consists of several key stages:
 
    You can run the pipeline by specifying the `--config` flag, which can take one of the following options:
    
-   `"deploy"`: Train and deploy the model if it meets the specified accuracy threshold.
-   `"predict"`: Use the trained model to make predictions.
-   `"deploy_and_predict"`: Train, deploy, and then run predictions using the model.
+   - `"deploy"`: Train and deploy the model if it meets the specified accuracy threshold.
+   - `"predict"`: Use the trained model to make predictions.
+   - `"deploy_and_predict"`: Train, deploy, and then run predictions using the model.
    
    Additionally, you can set a `--min_accuracy` flag, which determines the minimum accuracy required for a trained model to be deployed on the MLflow server.
 
