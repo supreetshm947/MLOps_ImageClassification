@@ -68,3 +68,11 @@ The implemented Machine Learning workflow consists of several key stages:
    ```bash
    python run_deployment.py --config deploy --min_accuracy 0.40
 
+6. **Start the Streamlit Frontend**
+
+	Run the Streamlit app to interact with the model:
+	
+	```bash
+	cd frontend
+	streamlit run streamlit_app.py
+	
