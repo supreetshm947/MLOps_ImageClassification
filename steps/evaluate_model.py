@@ -16,7 +16,7 @@ logger = get_logger()
 experiment_tracker = Client().active_stack.experiment_tracker
 
 
-@step(experiment_tracker=experiment_tracker.name)
+@step(experiment_tracker=experiment_tracker.name, enable_cache=False)
 def evaluate_model(model: nn.Module, criterion: nn.Module, test_loader: DataLoader) -> Tuple[
     Annotated[float, "test_loss"], Annotated[float, "test_accuracy"]]:
     device = get_device_type()
@@ -28,6 +28,20 @@ def evaluate_model(model: nn.Module, criterion: nn.Module, test_loader: DataLoad
     model.eval()
 
     with torch.no_grad():
+
+        # from PIL import Image
+        # from torchvision import transforms
+        # image_path = 'charlie.jpg'
+        # image = Image.open(image_path)
+        # transform = transforms.ToTensor()
+        #
+        # # Apply the transform to the image
+        # image_tensor = transform(image)
+        # # images = image_tensor.to(device)
+        # images = torch.unsqueeze(image_tensor, 0)
+        # images = images.numpy()
+        # outputs = model(images)
+
         for images, labels in tqdm(test_loader):
             images = images.to(device)
             labels = labels.to(device)
@@ -44,7 +58,6 @@ def evaluate_model(model: nn.Module, criterion: nn.Module, test_loader: DataLoad
             # Collect labels and predictions for accuracy calculation
             all_labels.extend(labels.cpu().numpy())
             all_preds.extend(preds.cpu().numpy())
-            break
 
     avg_loss = total_loss / len(test_loader)
 

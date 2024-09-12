@@ -9,6 +9,13 @@ torch-geometric
 click
 matplotlib
 scikit-learn
+pandas
+mlflow
+virtualenv
+numpy
+streamlit
+fastapi
+uvicorn
 
 #mlops
 zenml[server]

@@ -8,6 +8,9 @@ from torchvision import transforms
 # import matplotlib.pyplot as plt
 import time
 import datetime
+from torchvision import transforms, datasets
+from torch.utils.data import DataLoader
+from constants import BATCH_SIZE
 
 
 # from IPython import display
@@ -35,8 +38,10 @@ def load_data(batch_size, num_workers, device_type="cpu", pin_memory=False):
         test_loader = torch.utils.data.DataLoader(test_data, batch_size=batch_size, num_workers=num_workers,
                                                   pin_memory=pin_memory)
     else:
-        train_loader = torch.utils.data.DataLoader(train_data, batch_size=batch_size, shuffle=True, num_workers=num_workers)
-        test_loader = torch.utils.data.DataLoader(test_data, batch_size=batch_size, shuffle=True, num_workers=num_workers)
+        train_loader = torch.utils.data.DataLoader(train_data, batch_size=batch_size, shuffle=True,
+                                                   num_workers=num_workers)
+        test_loader = torch.utils.data.DataLoader(test_data, batch_size=batch_size, shuffle=True,
+                                                  num_workers=num_workers)
 
     return train_loader, test_loader, classes
 
@@ -50,6 +55,16 @@ def get_num_gpus(device):
         return torch.cuda.device_count()
     return 1
 
+def read_classes(class_file_path):
+    with open(class_file_path, "r") as file:
+        return file.readline().split(" ")
+
+def get_label_from_prediction(prediction, classes):
+    if isinstance(prediction, torch.Tensor):
+        prediction = prediction.detach().cpu().numpy()
+    indices = np.argmax(prediction, axis=1)
+    predicted_labels = [classes[idx] for idx in indices]
+    return predicted_labels
 
 # def train(train_loader, test_loader, model, device, criterion, optimizer, epochs=100, plot_loss=False):
 #     train_losses = []
@@ -105,9 +120,9 @@ def get_num_gpus(device):
 #                 f'test loss: {test_loss:.3f}, test accuracy: {test_accuracy:.3f}, ' + \
 #                 f'time: {str(datetime.timedelta(seconds=int(time.time() - start)))}'
 #             )
-    #     if plot:
-    #         plot(train_losses=train_losses, test_losses=test_losses, test_accuracy=test_accuracies)
-    # saved_model.save_model("saved_model.pth")
+#     if plot:
+#         plot(train_losses=train_losses, test_losses=test_losses, test_accuracy=test_accuracies)
+# saved_model.save_model("saved_model.pth")
 
 # def plot(train_losses, test_losses, test_accuracy):
 #     display.clear_output(wait=True)

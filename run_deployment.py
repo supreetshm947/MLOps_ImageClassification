@@ -3,7 +3,8 @@ from zenml.integrations.mlflow.model_deployers.mlflow_model_deployer import MLFl
 from zenml.integrations.mlflow.mlflow_utils import get_tracking_uri
 from zenml.integrations.mlflow.services import MLFlowDeploymentService
 
-from pipelines.deployment_pipeline import continuous_deployment_pipeline
+from constants import MIN_ACCURACY
+from pipelines.deployment_pipeline import continuous_deployment_pipeline, inference_pipeline
 from typing import cast
 
 DEPLOY = "deploy"
@@ -22,7 +23,7 @@ DEPLOY_AND_PREDICT = "deploy_and_predict"
 )
 @click.option(
     "--min_accuracy",
-    default=0,
+    default=MIN_ACCURACY,
     help="Minimum Accuracy required to deploy the model."
 )
 def main(config: str, min_accuracy: float):
@@ -33,9 +34,16 @@ def main(config: str, min_accuracy: float):
 
     if deploy:
         continuous_deployment_pipeline(
-            data_path="data",
+            data_path="data/train",
             min_accuracy=min_accuracy,
             timeout=120,
+            workers=3
+        )
+
+    if predict:
+        inference_pipeline(
+            pipeline_name="continuous_deployment_pipeline",
+            pipeline_step_name="mlflow_model_deployer_step",
         )
 
     print(
@@ -55,7 +63,7 @@ def main(config: str, min_accuracy: float):
 
     if existing_services:
         service = cast(MLFlowDeploymentService, existing_services[0])
-        service.start(timeout=60)
+        # service.start(timeout=60)
         if service.is_running:
             print(
                 f"The MLflow prediction server is running locally as a daemon "

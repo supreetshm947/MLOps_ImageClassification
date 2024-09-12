@@ -31,10 +31,15 @@ def download_cifar100():
 
     classes = train.classes
 
+    classes_file = "classes.txt"
+    with open(classes_file, 'w') as file:
+        file.write(" ".join(classes))
+
     save_torchvision_as_image(train, train_dir, classes)
     save_torchvision_as_image(test, test_dir, classes)
 
     logger.info("Converted cifar100 to generic format.")
+
 
 if __name__ == "__main__":
     download_cifar100()
