@@ -18,15 +18,16 @@ The implemented Machine Learning workflow consists of several key stages:
 2. **DataLoader**: Fetch loader objects for ingested and processed data.
 3. **Model Training**: Train a convolutional neural network (CNN) on the training dataset.
 4. **Model Evaluation**: Evaluate the performance of the model on the training dataset.
-5. **Model Deployment**: Deploy the model to a ZenML-based MLOps server for serving predictions.
-6. **Inference Service**: Build a FastAPI service for communication between the frontend and backend.
-7. **Frontend Interface**: Build a Streamlit app to provide a user-friendly interface for image uploads and classification results.
+6. **Model Deployment**: Deploy the model to a ZenML-based MLOps server if it meets the  for serving predictions.
+7. **Inference Service**: Build a FastAPI service for communication between the frontend and backend.
+8. **Frontend Interface**: Build a Streamlit app to provide a user-friendly interface for image uploads and classification results.
 
 
 ### 🚀 How to Run the Project
 
-1. Clone the repository
-   git clone [https://github.com/your_username/image-classification-mlops.git](https://github.com/supreetshm947/MLOps_ImageClassification.git)
-   cd MLOps_ImageClassification
+1. **Clone the repository**
 
+   ```bash
+   git clone https://github.com/your_username/image-classification-mlops.git
+   cd MLOps_ImageClassification
 
