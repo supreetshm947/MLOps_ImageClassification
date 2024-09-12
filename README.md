@@ -54,7 +54,17 @@ The implemented Machine Learning workflow consists of several key stages:
    make start
 
 5. **Training Pipeline**
-   The options to run the pipline are given by config flag which can be either "deploy", "predict" or "deploy_and_predict" and min_accuracy is the minimum accuracy required for a trained model to be deployed on mlflow server.
-      ```bash
-      python run_deployment.py --config deploy --min_accuracy .40
+
+   You can run the pipeline by specifying the `--config` flag, which can take one of the following options:
+   
+   - `"deploy"`: Train and deploy the model if it meets the specified accuracy threshold.
+   - `"predict"`: Use the trained model to make predictions.
+   - `"deploy_and_predict"`: Train, deploy, and then run predictions using the model.
+   
+   Additionally, you can set a `--min_accuracy` flag, which determines the minimum accuracy required for a trained model to be deployed on the MLflow server.
+
+   Example usage to deploy a model only if its accuracy is greater than 40%:
+
+   ```bash
+   python run_deployment.py --config deploy --min_accuracy 0.40
 
