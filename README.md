@@ -1,6 +1,8 @@
 # 🖼️ Image Classification with PyTorch | MLOps using ZenML
 This work implements a Machine Learning (ML) workflow and deployment for an image classification model built using PyTorch and trained on CIFAR-100 dataset. The project implements a complete MLOps workflow with **ZenML** for orchestration, **Streamlit** for UI, **FastAPI** for backend services, and connects to a deployed model on an MLOps server for inference. The goal is to demonstrate how to integrate machine learning pipelines with MLOps tools and serve a deep learning model using a modern full-stack setup.
 
+![screen](screen.jpg)
+
 # 🛠️ Technologies Used
 - **PyTorch**: Deep learning framework for building the CNN model for classification.
 - **ZenML**: MLOps framework for creating reproducible ML pipelines.
@@ -9,7 +11,13 @@ This work implements a Machine Learning (ML) workflow and deployment for an imag
 - **Streamlit**: Frontend interface for user interactions.
 - **Conda**: Used to manage the project’s virtual environment and dependencies.
 
-## 🎯 Project Overview
+## 🫕 Project Overview
+
+![](mlflow_classifier.png)
+
+The machine learning workflow involves loading and preprocessing the CIFAR-100 dataset, training and evaluating a CNN model, and then deploying the model to an MLOps server for serving predictions. A FastAPI service handles backend communication, while a Streamlit app provides a frontend interface for users to upload images and get classification results.
+
+## 🎯 MLOPs Pipeline
 
 ![pipeline](pipeline.png)
 
