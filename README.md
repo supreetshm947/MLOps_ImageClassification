@@ -17,7 +17,7 @@ This work implements a Machine Learning (ML) workflow and deployment for an imag
 ## 🫕 Project Overview
 
 <p align="center">
-	<img src="mlflow_classifier.png" alt="classifier"  style="width:50%;"/>
+	<img src="mlflow_classifier.png" alt="classifier"  style="width:60%;"/>
 </p>
 
 The machine learning workflow involves loading and preprocessing the CIFAR-100 dataset, training and evaluating a CNN model, and then deploying the model to an MLOps server for serving predictions. A FastAPI service handles backend communication, while a Streamlit app provides a frontend interface for users to upload images and get classification results.
