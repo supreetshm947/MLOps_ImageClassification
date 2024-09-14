@@ -21,8 +21,9 @@ This work implements a Machine Learning (ML) workflow and deployment for an imag
 The machine learning workflow involves loading and preprocessing the CIFAR-100 dataset, training and evaluating a CNN model, and then deploying the model to an MLOps server for serving predictions. A FastAPI service handles backend communication, while a Streamlit app provides a frontend interface for users to upload images and get classification results.
 
 ## 🎯 MLOPs Pipeline
-
-![pipeline](pipeline.png)
+<p align="center">
+	<img src="pipeline.png" alt="pipeline" style="width:50%;"/>
+</p>
 
 The implemented Machine Learning workflow consists of several key stages:
 1. **Data Ingestion**: Load and preprocess (apply transformations) the CIFAR-100 dataset.
