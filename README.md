@@ -41,7 +41,7 @@ The implemented Machine Learning workflow consists of several key stages:
 1. **Clone the repository**
 
    ```bash
-   git clone https://github.com/your_username/image-classification-mlops.git
+   git clone https://github.com/supreetshm947/MLOps_ImageClassification.git
    cd MLOps_ImageClassification
 
 2. **Create Conda Environment and Install Dependencies**
